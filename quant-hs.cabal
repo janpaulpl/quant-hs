@@ -1,0 +1,74 @@
+cabal-version: 2.2
+name:           quant-hs
+version:        0.1.0.0
+description:    A quantitative finance tool for stock analysis and recommendations
+homepage:       https://github.com/githubuser/quant-hs#readme
+bug-reports:    https://github.com/githubuser/quant-hs/issues
+author:         Jan-Paul Ramos
+maintainer:     mail@janpaul.pl
+copyright:      2024 Jan-Paul Ramos
+license:        BSD-3-Clause
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    CHANGELOG.md
+
+source-repository head
+  type: git
+  location: https://github.com/githubuser/quant-hs
+
+library
+  exposed-modules:
+      Types
+      Analysis
+      Recommendation
+      Data
+  other-modules:
+      Paths_quant_hs
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
+  build-depends:
+      base >=4.7 && <5
+    , time
+    , vector
+    , statistics
+    , aeson
+    , bytestring
+    , text
+    , process
+    , directory
+    , filepath
+    , ansi-terminal
+  default-language: Haskell2010
+
+executable quant-hs-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_quant_hs
+  hs-source-dirs:
+      app
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , quant-hs
+    , text
+    , process
+    , directory
+    , filepath
+    , ansi-terminal
+  default-language: Haskell2010
+
+test-suite quant-hs-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  hs-source-dirs: test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , quant-hs
+    , QuickCheck
+    , vector
+    , time
+  default-language: Haskell2010

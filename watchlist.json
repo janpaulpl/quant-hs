@@ -1,0 +1,23 @@
+[
+  {
+    "wiSymbol": "AAPL",
+    "purchasePrice": 150.0,
+    "targetSellPrice": 180.0,
+    "potentialBuyPrice": null,
+    "riskTolerance": "Medium"
+  },
+  {
+    "wiSymbol": "GOOGL",
+    "purchasePrice": null,
+    "targetSellPrice": null,
+    "potentialBuyPrice": 2500.0,
+    "riskTolerance": "High"
+  },
+  {
+    "wiSymbol": "MSFT",
+    "purchasePrice": 200.0,
+    "targetSellPrice": 250.0,
+    "potentialBuyPrice": null,
+    "riskTolerance": "Low"
+  }
+]
