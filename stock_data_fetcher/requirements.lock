@@ -30,6 +30,7 @@ numpy==2.1.2
     # via pandas
     # via yfinance
 pandas==2.2.3
+    # via stock-data-fetcher
     # via yfinance
 peewee==3.17.7
     # via yfinance
