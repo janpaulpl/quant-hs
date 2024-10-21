@@ -57,6 +57,24 @@ This project provides advanced stock analysis and trading recommendations based 
    - Personalized recommendation (Strong Buy, Buy, Hold, Sell, Strong Sell)
    - Detailed reasoning for the recommendation
 
+## Understanding the output
+When you run the analysis, the tool provides real-time feedback in the terminal and saves detailed reports in the `results/` directory.
+
+- **Technical Indicators**
+   - SMA (Simple Moving Average): Indicates the trend direction. A higher SMA50 compared to SMA200 suggests an upward trend.
+   - RSI (Relative Strength Index): Measures the speed and change of price movements. Values between 30 and 70 are considered normal.
+   - MACD (Moving Average Convergence Divergence): Shows the relationship between two moving averages of a stock’s price. A positive MACD suggests upward momentum.
+   - Bollinger Bands: Provide a relative definition of high and low prices. Prices touching the upper band may indicate overbought conditions.
+- **Fundamental Metrics**
+   - P/E Ratio (Price-to-Earnings): Valuation metric indicating the company's current share price relative to its per-share earnings.
+   - P/B Ratio (Price-to-Book): Compares a company's market value to its book value.
+   - Debt/Equity Ratio: Measures a company's financial leverage.
+  - Free Cash Flow: Indicates the cash a company generates after accounting for cash outflows to  support operations and maintain its capital assets.
+- **Recommendation Reasoning**
+   - Technical Indicators: Whether they support a buy/sell decision based on trends and momentum.
+   - Fundamental Analysis: The financial health and valuation of the company.
+- Price Targets: How the current price relates to your purchase and sell targets.
+
 ## QuickCheck Testing
 
 This project uses QuickCheck, a library for property-based testing in Haskell. Property-based testing allows us to define properties that our functions should satisfy, and then automatically test these properties against a large number of randomly generated inputs.
