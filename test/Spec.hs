@@ -32,6 +32,9 @@ genPositiveDouble = arbitrary `suchThat` (> 0)
 genNonNegativeDouble :: Gen Double
 genNonNegativeDouble = arbitrary `suchThat` (>= 0)
 
+genNonNegativeInt :: Gen Int
+genNonNegativeInt = arbitrary `suchThat` (>= 0)
+
 genNonEmptyString :: Gen String
 genNonEmptyString = listOf1 arbitraryASCIIChar
 
@@ -48,7 +51,7 @@ genHistoricalData = do
   h <- genPositiveDouble `suchThat` (>= o)
   l <- genPositiveDouble `suchThat` (\x -> x <= o && x <= h)
   c <- genPositiveDouble `suchThat` (\x -> x >= l && x <= h)
-  v <- abs <$> arbitrary
+  v <- genNonNegativeInt
   return $ HistoricalData date o h l c v
 
 genTechnicalIndicators :: Gen TechnicalIndicators
@@ -56,11 +59,13 @@ genTechnicalIndicators = do
   sma50 <- genPositiveDouble
   sma200 <- genPositiveDouble
   rsi <- choose (0, 100)  -- Ensure RSI is between 0 and 100
-  macd <- (,,) <$> arbitrary <*> arbitrary <*> arbitrary
+  macdValue <- arbitrary
+  signalLine <- arbitrary
+  histogram <- return (macdValue - signalLine)
   lower <- genPositiveDouble
   mid <- genPositiveDouble `suchThat` (>= lower)
   upper <- genPositiveDouble `suchThat` (>= mid)
-  return $ TechnicalIndicators sma50 sma200 rsi macd (lower, mid, upper)
+  return $ TechnicalIndicators sma50 sma200 rsi (macdValue, signalLine, histogram) (lower, mid, upper)
 
 genFundamentalData :: Gen FundamentalData
 genFundamentalData = FundamentalData
@@ -109,7 +114,7 @@ prop_macdConsistency :: Property
 prop_macdConsistency = forAll (listOf1 genPositiveDouble) $ \prices ->
   length prices >= 35 ==>
     let (macdValue, signal, histogram) = calculateMACD prices
-    in histogram == macdValue - signal
+    in abs (histogram - (macdValue - signal)) < 1e-6  -- Allowing small numerical error
 
 prop_bollingerBandsOrder :: Property
 prop_bollingerBandsOrder = forAll (listOf1 genPositiveDouble) $ \prices ->

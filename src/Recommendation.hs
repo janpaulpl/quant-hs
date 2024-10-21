@@ -57,14 +57,16 @@ recommendAction stock item techs funds = timeout (5 * 1000000) $ do  -- 5 second
 analyzeTechnicals :: TechnicalIndicators -> Double
 analyzeTechnicals TechnicalIndicators{..} = trace "Entering analyzeTechnicals" $ do
   let smaScore = trace ("SMA Score: " ++ show (if sma50 > sma200 then (1 :: Double) else (0 :: Double))) $ if sma50 > sma200 then 1 else 0
-  let rsiScore = trace ("RSI Score: " ++ show ((rsi - 30) / 40)) $ (rsi - 30) / 40  -- Normalized RSI score
+  let rsiScoreRaw = (rsi - 30) / 40  -- Normalized RSI score
+  let rsiScore = max 0 $ min 1 $ trace ("RSI Score (raw): " ++ show rsiScoreRaw) rsiScoreRaw
   let (macdLine, signalLine, _) = macd
   let macdScore = trace ("MACD Score: " ++ show (if macdLine > signalLine then (1 :: Double) else (0 :: Double))) $ if macdLine > signalLine then 1 else 0
   let (lower, mid, upper) = bbands
   let bbandsDenominator = upper - lower
-  let bbandsScore = if bbandsDenominator /= 0
-                    then trace ("Bollinger Bands Score: " ++ show ((mid - lower) / bbandsDenominator)) $ (mid - lower) / bbandsDenominator
-                    else 0.5  -- Neutral score if denominator is zero
+  let bbandsScoreRaw = if bbandsDenominator /= 0
+                        then (mid - lower) / bbandsDenominator
+                        else 0.5  -- Neutral score if denominator is zero
+  let bbandsScore = max 0 $ min 1 $ trace ("Bollinger Bands Score (raw): " ++ show bbandsScoreRaw) bbandsScoreRaw
   trace "Calling weightedAverage in analyzeTechnicals" $
     weightedAverage [(smaScore, 0.3), (rsiScore, 0.3), (macdScore, 0.2), (bbandsScore, 0.2)]
 
